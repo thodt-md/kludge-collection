@@ -14,4 +14,4 @@ exact).
 
 ### Usage
 
-checkmount.sh /mount/target/dir your@email.com
+`checkmount.sh /mount/target/dir your@email.com`
