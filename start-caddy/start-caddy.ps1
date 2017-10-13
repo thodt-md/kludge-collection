@@ -1,8 +1,11 @@
-$OpenSSLSource = "https://indy.fulgan.com/SSL/openssl-1.0.1f-x64_86-win64.zip";
-$CaddySource = "https://caddyserver.com/download/windows/amd64";
-# For 32-bit systems use:
-#$OpenSSLSource = "https://indy.fulgan.com/SSL/openssl-1.0.1f-i386-win32.zip";
-#$CaddySource = "https://caddyserver.com/download/windows/386";
+$OpenSSLSource = "https://indy.fulgan.com/SSL/openssl-1.0.1f-i386-win32.zip";
+$CaddySource = "https://caddyserver.com/download/windows/386";
+
+if ($ENV:PROCESSOR_ARCHITECTURE -Eq "AMD64")
+{
+  $OpenSSLSource = "https://indy.fulgan.com/SSL/openssl-1.0.1f-x64_86-win64.zip";
+  $CaddySource = "https://caddyserver.com/download/windows/amd64";
+}
 
 $OpenSSLExe = "openssl.exe";
 
