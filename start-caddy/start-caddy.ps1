@@ -58,10 +58,16 @@ function EnsureOpenSSLPresent()
         EnsureDirectoryExists $TempPath;
         GetFile -Url $OpenSSLSource -Dest "$TempPath\openssl.zip";
         Unzip -Archive "$TempPath\openssl.zip" -Dest "$TempPath\openssl";
-        WriteOpenSSLConfig -Path "$TempPath\openssl\openssl.cnf";
-        $env:OPENSSL_CONF = "$TempPath\openssl\openssl.cnf";
         $script:OpenSSLExe = "$TempPath\openssl\openssl.exe";
     }
+}
+
+function CreateOpenSSLConfig()
+{
+    Echo "Creating OpenSSL config"
+    EnsureDirectoryExists "$TempPath\openssl";
+    WriteOpenSSLConfig -Path "$TempPath\openssl\openssl.cnf";
+    $env:OPENSSL_CONF = "$TempPath\openssl\openssl.cnf";
 }
 
 function WriteOpenSSLConfig([string] $Path)
@@ -148,6 +154,7 @@ if (!(Test-Path -PathType Leaf -Path "$KeysDir\server.key") -Or !(Test-Path -Pat
 {
     Echo "Key missing";
     EnsureOpenSSLPresent;
+    CreateOpenSSLConfig;
     EnsureDirectoryExists $KeysDir;
     Invoke-Expression "$OpenSSLExe req -x509 -nodes -days 365 -newkey rsa:2048 -keyout `"$KeysDir\server.key`" -out `"$KeysDir\server.crt`" -subj `"$CertSubject`"";
 } else {
